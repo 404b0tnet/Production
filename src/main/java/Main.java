@@ -65,7 +65,8 @@ public class Main extends Application {
 
       @Override
       public void handle(ActionEvent e) {
-        actiontarget.setFill(Color.FIREBRICK);
+        // Rather hard-coding the event has an ID for reference
+        actiontarget.setId("actiontarget");
         actiontarget.setText("Sign in button pressed");
       }
     });
@@ -77,7 +78,7 @@ public class Main extends Application {
 
     // Creates a title called "Welcome"
     Text scenetitle = new Text("Welcome");
-    scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+    scenetitle.setId("welcome-text");
     grid.add(scenetitle, 0, 0, 2, 1);
 
 
