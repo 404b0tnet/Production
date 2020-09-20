@@ -21,7 +21,7 @@ public class Main extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    primaryStage.setTitle("JavaFX Welcome");
+    primaryStage.setTitle("Employee Details");
 
 
     // GridPane
@@ -37,7 +37,6 @@ public class Main extends Application {
     primaryStage.setScene(scene);
     scene.getStylesheets().add
             (Main.class.getResource("Login.css").toExternalForm());
-    primaryStage.show();
 
 
     // Display application
