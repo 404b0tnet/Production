@@ -14,14 +14,14 @@ public class Main extends Application {
   public void start(Stage primaryStage) throws Exception {
     Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
-    Scene scene = new Scene(root, 300, 275);
+    Scene scene = new Scene(root, 600, 400);
 
     primaryStage.setTitle("Production");
     primaryStage.setScene(scene);
 
     // Application styling with CSS
-    //scene.getStylesheets().add
-    //   (Main.class.getResource("Login.css").toExternalForm());
+    scene.getStylesheets().add
+        (Main.class.getResource("Login.css").toExternalForm());
 
     // Display Application
     primaryStage.show();
