@@ -1,14 +1,13 @@
-import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
-import javax.swing.Action;
+
 
 
 public class Controller {
@@ -17,8 +16,8 @@ public class Controller {
     private ChoiceBox<String> itemTypeBox;
 
     @FXML
-    //Event handler for button click
-    void addProduct(javafx.event.ActionEvent event) {
+    //Event handler for adding a product in Product Line
+    void addProductBtn(ActionEvent event) {
         connectToDatabase();
     }
 
@@ -39,7 +38,7 @@ public class Controller {
 
 
         final String JDBC_DRIVER = "org.h2.Driver";
-        final String DB_URL = "jdbc:h2:./res/HRDB";
+        final String DB_URL = "jdbc:h2:./res/Products";
 
 
         //  Database credentials
@@ -67,9 +66,7 @@ public class Controller {
                         + "VALUES ( 'AUDIO', 'Apple', 'iPod' );";
 
             ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                System.out.println(rs.getString(1));
-            }
+
 
 
             // STEP 4: Clean-up environment

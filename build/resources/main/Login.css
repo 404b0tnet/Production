@@ -15,21 +15,7 @@ Adds effects to the labels
     -fx-text-fill: #333333;
     -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
 }
-
  */
-
-
-/*
-Calling the title ID from Main.java
-This allows me to customize the welcome text
-without having to add code to Main.java
- */
-#welcome-text {
-    -fx-font-size: 32px;
-    -fx-font-family: "Arial Black";
-    -fx-fill: #818181;
-    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
-}
 
 
 /*
@@ -49,18 +35,21 @@ without having to add code to Main.java
 /*
 Adds shadow to the button
  */
+
 .button {
-    -fx-text-fill: white;
-    -fx-font-family: "Arial Narrow";
+    -fx-text-fill: Black;
+    -fx-font-family: "Century";
     -fx-font-weight: bold;
-    -fx-background-color: linear-gradient(#61a2b1, #2A5058);
+    -fx-background-color: linear-gradient(#ff3b1f, #ffffff);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
+
+
 
 
 /*
 Adds a hover effect to the button
  */
 .button:hover {
-    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+    -fx-background-color: linear-gradient(#ffffff,#ff3b1f);
 }

@@ -36,25 +36,25 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="130.0" text="Product Name" textFill="WHITE">
+                              <Label alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="130.0" text="Product Name">
                                  <font>
                                     <Font name="Cambria Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="130.0" text="Manufacturer" textFill="WHITE" GridPane.rowIndex="1">
+                              <Label alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="130.0" text="Manufacturer" GridPane.rowIndex="1">
                                  <font>
                                     <Font name="Cambria Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="130.0" text="Item Type" textFill="WHITE" GridPane.rowIndex="2">
+                              <Label alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="130.0" text="Item Type" GridPane.rowIndex="2">
                                  <font>
                                     <Font name="Cambria Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <ChoiceBox fx:id="itemTypeBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <ChoiceBox fx:id="itemTypeBox" prefWidth="150.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <TextField GridPane.columnIndex="1" />
                               <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Button mnemonicParsing="false" onAction="#addProduct" prefHeight="25.0" prefWidth="165.0" text="Add Product" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <Button mnemonicParsing="false" onAction="#addProductBtn" prefHeight="25.0" prefWidth="165.0" stylesheets="@Login.css" text="Add Product" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="200.0" />
                                  </GridPane.margin>
@@ -69,18 +69,18 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView layoutX="14.0" layoutY="44.0" prefHeight="228.0" prefWidth="553.0" />
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="28.0" prefWidth="132.0" text="Choose Product" textFill="WHITE">
+                        <ListView layoutX="22.0" layoutY="33.0" prefHeight="256.0" prefWidth="545.0" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="7.0" prefHeight="28.0" prefWidth="132.0" text="Choose Product">
                            <font>
                               <Font name="Cambria Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="296.0" prefHeight="28.0" prefWidth="132.0" text="Choose Quantity" textFill="WHITE">
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="297.0" prefHeight="28.0" prefWidth="132.0" text="Choose Quantity">
                            <font>
                               <Font name="Cambria Bold" size="16.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="cmbQuantity" layoutX="146.0" layoutY="298.0" prefHeight="25.0" prefWidth="144.0" />
+                        <ComboBox fx:id="cmbQuantity" layoutX="154.0" layoutY="298.0" prefHeight="25.0" prefWidth="144.0" />
                         <Button layoutX="399.0" layoutY="298.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="168.0" text="Record Production" />
                      </children>
                   </AnchorPane>
