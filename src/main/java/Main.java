@@ -1,8 +1,10 @@
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,30 +22,39 @@ public class Main extends Application {
   }
 
   @Override
-  public void start(Stage primaryStage) {
-    primaryStage.setTitle("Employee Details");
+  public void start(Stage primaryStage) throws Exception {
+    Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
+    Scene scene = new Scene(root, 300, 275);
 
-    // GridPane
-    GridPane grid = new GridPane();
-    grid.setAlignment(Pos.CENTER);
-    grid.setHgap(10);
-    grid.setVgap(10);
-    grid.setPadding(new Insets(25, 25, 25, 25));
-
-
-    // Size of application
-    Scene scene = new Scene(grid, 300, 275);
+    primaryStage.setTitle("Production");
     primaryStage.setScene(scene);
-    scene.getStylesheets().add
-            (Main.class.getResource("Login.css").toExternalForm());
 
+    // Application styling with CSS
+    //scene.getStylesheets().add
+    //   (Main.class.getResource("Login.css").toExternalForm());
 
-    // Display application
+    // Display Application
     primaryStage.show();
+  }
+}
+
+    /*
 
 
-    // Event button
+    Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+
+    Scene scene = new Scene(root, 300, 275);
+
+    primaryStage.setTitle("Employee Details");
+    primaryStage.setScene(scene);
+
+
+
+     */
+
+
+    /* Event button
     Button btn = new Button("Sign in");
     HBox hbBtn = new HBox(10);
     hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
@@ -66,11 +77,12 @@ public class Main extends Application {
         actiontarget.setText("Sign in button pressed");
       }
     });
+    */
 
 
     /*
     Code for Scene classes are below
-     */
+
 
     // Creates a title called "Welcome"
     Text scenetitle = new Text("Welcome");
@@ -93,5 +105,7 @@ public class Main extends Application {
     PasswordField pwBox = new PasswordField();
     grid.add(pwBox, 1, 2);
 
-  }
-}
+     */
+
+
+
