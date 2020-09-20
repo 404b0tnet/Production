@@ -17,26 +17,21 @@ public class Controller {
     private ChoiceBox<String> itemTypeBox;
 
     @FXML
-    private Button addProdBtn;
-
-    @FXML
     //Event handler for button click
     void addProduct(javafx.event.ActionEvent event) {
         connectToDatabase();
     }
 
-
     @FXML
     private ComboBox<String> cmbQuantity;
-
-    @FXML
-    private Button recordProdBtn;
 
 
     public void initialize(){
         for (int count = 1; count <= 10; count++){
             cmbQuantity.getItems().add(String.valueOf(count));
         }
+        cmbQuantity.getSelectionModel().selectFirst();
+        cmbQuantity.setEditable(true);
     }
 
 
@@ -68,7 +63,8 @@ public class Controller {
             stmt = conn.createStatement();
 
 
-            String sql = "SELECT * FROM JOBS";
+            String sql = "INSERT INTO Product(type, manufacturer, name)"
+                        + "VALUES ( 'AUDIO', 'Apple', 'iPod' );";
 
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
