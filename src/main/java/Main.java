@@ -27,30 +27,7 @@ public class Main extends Application {
     primaryStage.show();
   }
 }
-
     /*
-
-
-    Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-
-    Scene scene = new Scene(root, 300, 275);
-
-    primaryStage.setTitle("Employee Details");
-    primaryStage.setScene(scene);
-
-
-
-     */
-
-
-    /* Event button
-    Button btn = new Button("Sign in");
-    HBox hbBtn = new HBox(10);
-    hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-    hbBtn.getChildren().add(btn);
-    grid.add(hbBtn, 1, 4);
-
-
     //Text control for displaying the message after button press
     final Text actiontarget = new Text();
     grid.add(actiontarget, 1, 6);

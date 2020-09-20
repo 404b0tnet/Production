@@ -1,26 +1,43 @@
+import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
+import javax.swing.Action;
+
 
 public class Controller {
 
     @FXML
-    private Label lblOutput;
+    private ChoiceBox<String> itemTypeBox;
 
-    public void sayHello() {
-        lblOutput.setText("Hello FXML!");
-    }
+    @FXML
+    private Button addProdBtn;
 
-
-    public void initialize(){
+    @FXML
+    //Event handler for button click
+    void addProduct(javafx.event.ActionEvent event) {
         connectToDatabase();
     }
 
 
+    @FXML
+    private ComboBox<String> cmbQuantity;
+
+    @FXML
+    private Button recordProdBtn;
+
+
+    public void initialize(){
+        for (int count = 1; count <= 10; count++){
+            cmbQuantity.getItems().add(String.valueOf(count));
+        }
+    }
 
 
     public void connectToDatabase(){
@@ -70,3 +87,4 @@ public class Controller {
         }
     }
 }
+
