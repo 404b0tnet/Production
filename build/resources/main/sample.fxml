@@ -81,7 +81,7 @@
                            </font>
                         </Label>
                         <ComboBox fx:id="cmbQuantity" layoutX="154.0" layoutY="298.0" prefHeight="25.0" prefWidth="144.0" />
-                        <Button layoutX="399.0" layoutY="298.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="168.0" text="Record Production" />
+                        <Button layoutX="399.0" layoutY="298.0" mnemonicParsing="false" onAction="#recordPrdBtn" prefHeight="25.0" prefWidth="168.0" text="Record Production" />
                      </children>
                   </AnchorPane>
             </content>

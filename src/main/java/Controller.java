@@ -16,10 +16,19 @@ public class Controller {
     private ChoiceBox<String> itemTypeBox;
 
     @FXML
-    //Event handler for adding a product in Product Line
+    //Event handler for adding a product in Product Line tab
     void addProductBtn(ActionEvent event) {
+        System.out.println("Produce was added");
         connectToDatabase();
     }
+
+
+    @FXML
+    // Event handler for recording a product in the Produce tab
+    void recordPrdBtn(ActionEvent event) {
+        System.out.println("Product was recorded");
+    }
+
 
     @FXML
     private ComboBox<String> cmbQuantity;
