@@ -18,8 +18,8 @@ public class Controller {
     @FXML
     //Event handler for adding a product in Product Line tab
     void addProductBtn(ActionEvent event) {
-        System.out.println("Produce was added");
         connectToDatabase();
+        System.out.println("Produce was added");
     }
 
 
@@ -71,10 +71,11 @@ public class Controller {
             stmt = conn.createStatement();
 
 
-            String sql = "INSERT INTO Product(type, manufacturer, name)"
-                        + "VALUES ( 'AUDIO', 'Apple', 'iPod' );";
 
-            ResultSet rs = stmt.executeQuery(sql);
+            String sql = "INSERT INTO Product(type, manufacturer, name)"
+                        + "VALUES ( 'Phone', 'Google', 'Pixel3' )";
+
+            stmt.executeUpdate(sql);
 
 
 
