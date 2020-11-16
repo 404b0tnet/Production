@@ -14,6 +14,7 @@ public abstract class Product implements Item {
     this.productName = productName;
   }
 
+  @Override
   public String toString() {
     return "Name: " + getProductName() +
         "\nManufacturer: " + getProductManufacturer() +

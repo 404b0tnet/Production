@@ -14,15 +14,12 @@ class AudioPlayer extends Product implements MultimediaControl{
   }
 
 
-
+  @Override
   public String toString(){
-
-    String parentToString = super.toString();
-
-    if(supportedAudioFormats.equals(supportedPlaylistFormats))
-      return  parentToString;
+    if(supportedAudioFormats.equals("") || supportedPlaylistFormats.equals(""))
+      return  super.toString();
     else {
-      return parentToString +
+      return super.toString() +
           "\nSupported Audio Formats: " + supportedAudioFormats +
           "\nSupported Playlist Formats: " + supportedPlaylistFormats;
     }
