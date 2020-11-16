@@ -2,10 +2,10 @@ public interface Item {
 
   int getId();                                   // return int
 
-  void setName(String name);
-  String getName();                              // return string
+  void setProductName(String name);
+  String getProductName();                              // return string
 
-  void SetManufacturer(String manufacturer);
-  String getManufacturer();                      // return string
+  void setProductManufacturer(String manufacturer);
+  String getProductManufacturer();                      // return string
 
 }
