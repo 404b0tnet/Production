@@ -1,21 +1,16 @@
-import java.util.Scanner;
-import javafx.event.EventType;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javafx.event.ActionEvent;
-import javafx.event.EventType;
+import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+
 
 
 public class Controller{
-
-    Scanner scanner = new Scanner(System.in);
 
      @FXML
     private ChoiceBox<String> itemTypeCBox;
@@ -41,24 +36,63 @@ public class Controller{
 
         cmbQuantity.getSelectionModel().selectFirst();
         cmbQuantity.setEditable(true);
+
+        //testMultimedia();
     }
 
 
     @FXML
         //Event handler for adding a product in Product Line tab
-    void addProductBtn(ActionEvent event) {
-        connectToDatabase();
+    void addProductBtn() {
+
+        try {
+            connectToDatabase();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         System.out.println("Product button was clicked");
     }
 
+
+
     @FXML
         // Event handler for recording a product in the Produce tab
-    void recordPrdBtn(ActionEvent event) {
+    void recordPrdBtn() {
         System.out.println("Product was recorded");
     }
 
+    public static void testMultimedia() {
 
-    public void connectToDatabase(){
+        AudioPlayer newAudioProduct = new AudioPlayer("DP-X1A",
+            "Onkyo",
+
+            "DSD/FLAC/ALAC/WAV/AIFF/MQA/Ogg-Vorbis/MP3/AAC",
+            "M3U/PLS/WPL");
+
+        Screen newScreen = new Screen("720x480", 40, 22);
+
+        MoviePlayer newMovieProduct = new MoviePlayer("DBPOWER MK101",
+            "OracleProduction", newScreen,
+            MonitorType.LCD);
+        ArrayList<MultimediaControl> productList = new ArrayList<MultimediaControl>();
+        productList.add(newAudioProduct);
+        productList.add(newMovieProduct);
+
+        for (MultimediaControl p : productList) {
+
+            System.out.println("\n/******************/\n");
+            System.out.println(p);
+            p.play();
+            p.stop();
+            p.next();
+            p.previous();
+        }
+
+        System.out.println("\n/******************/");
+    }
+
+
+    public void connectToDatabase() throws SQLException {
 
 
         final String JDBC_DRIVER = "org.h2.Driver";
@@ -80,11 +114,10 @@ public class Controller{
 
             //STEP 2: Open a connection
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
+            System.out.println("Connected to database.");
 
             //STEP 3: Execute a query
             stmt = conn.createStatement();
-
 
             String itemType = itemTypeCBox.getValue();
             String manufacturer = manufacturerTF.getText();
@@ -100,14 +133,19 @@ public class Controller{
             System.out.println("Item type was: " + itemType);
 
 
-            // STEP 4: Clean-up environment
-            stmt.close();
-            conn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
 
         } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
             e.printStackTrace();
+        } finally {
+
+            // STEP 4: Clean-up environment
+            try{stmt.close(); } catch (Exception e){}
+            try{conn.close();}catch (Exception e){}
         }
     }
 }
