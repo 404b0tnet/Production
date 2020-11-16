@@ -51,9 +51,9 @@
                                     <Font name="Cambria Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <ChoiceBox fx:id="itemTypeBox" prefWidth="150.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <TextField GridPane.columnIndex="1" />
-                              <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <ChoiceBox fx:id="itemTypeCBox" prefWidth="150.0" style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <TextField fx:id="productNameTF" GridPane.columnIndex="1" />
+                              <TextField fx:id="manufacturerTF" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <Button mnemonicParsing="false" onAction="#addProductBtn" prefHeight="25.0" prefWidth="165.0" stylesheets="@Login.css" text="Add Product" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="200.0" />
