@@ -1,4 +1,4 @@
-public abstract class Product implements Item {
+public class Product implements Item {
 
 
   private int id;
@@ -32,6 +32,10 @@ public abstract class Product implements Item {
 
   public String getProductName() {
     return productName;
+  }
+
+  public String getItemTypeCode(){
+    return type.getCode();
   }
 
 
