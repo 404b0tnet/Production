@@ -3,7 +3,13 @@ class AudioPlayer extends Product implements MultimediaControl{
   private String supportedAudioFormats = "";
   private String supportedPlaylistFormats = "";
 
-
+  /**
+   *
+   * @param name
+   * @param manufacturer
+   * @param supportedAudioFormats
+   * @param supportedPlaylistFormats
+   */
   public AudioPlayer(String name, String manufacturer,
       String supportedAudioFormats, String supportedPlaylistFormats){
 
@@ -14,6 +20,10 @@ class AudioPlayer extends Product implements MultimediaControl{
   }
 
 
+  /**
+   *
+   * @return
+   */
   @Override
   public String toString(){
     if(supportedAudioFormats.equals("") || supportedPlaylistFormats.equals(""))
@@ -26,19 +36,30 @@ class AudioPlayer extends Product implements MultimediaControl{
 
   }
 
-
+  /**
+   *
+   */
   public void play(){
     System.out.println("Playing");
   }
 
+  /**
+   *
+   */
   public void stop(){
     System.out.println("Stopping");
   }
 
+  /**
+   *
+   */
   public void previous(){
     System.out.println("Previous");
   }
 
+  /**
+   *
+   */
   public void next(){
     System.out.println("Next");
   }

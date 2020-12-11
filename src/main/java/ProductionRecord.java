@@ -8,7 +8,10 @@ public class ProductionRecord{
   private String serialNumber;
   private Date dateProduced;
 
-
+  /**
+   *
+   * @param productID
+   */
   public ProductionRecord(int productID){
 
     this.productID = productID;
@@ -16,9 +19,16 @@ public class ProductionRecord{
     serialNumber = "0";
     dateProduced = new Date();
 
+
   }
 
-
+  /**
+   *
+   * @param productionNumber
+   * @param productID
+   * @param serialNumber
+   * @param dateProduced
+   */
   public ProductionRecord(int productionNumber, int productID,
       String serialNumber, Date dateProduced){
 
@@ -29,6 +39,11 @@ public class ProductionRecord{
 
   }
 
+  /**
+   *
+   * @param newProduct
+   * @param itemCounter
+   */
   public ProductionRecord(Product newProduct, int itemCounter){
     String counter = String.format("%05d",itemCounter);
 
@@ -40,7 +55,10 @@ public class ProductionRecord{
   }
 
 
-
+  /**
+   *
+   * @return
+   */
   public String toString(){
     String formatDate = String.format("Date: %tc",getProdDate());
 
@@ -53,29 +71,69 @@ public class ProductionRecord{
 
 
   // setters
+
+  /**
+   *
+   * @param productID
+   */
   public void setProductID(int productID){
     this.productID = productID;
   }
+
+  /**
+   *
+   * @param productionNumber
+   */
   public void setProductionNum(int productionNumber){
     this.productionNumber = productionNumber;
   }
+
+  /**
+   *
+   * @param serialNumber
+   */
   public void setSerialNum(String serialNumber){
     this.serialNumber = serialNumber;
   }
+
+  /**
+   *
+   * @param date
+   */
   public void setProdDate(Date date){
     dateProduced = date;
   }
 
   // getters
+
+  /**
+   *
+   * @return
+   */
   public int getProductionNum(){
     return productionNumber;
   }
+
+  /**
+   *
+   * @return
+   */
   public int getProductID(){
     return productID;
   }
+
+  /**
+   *
+   * @return
+   */
   public String getSerialNum(){
     return serialNumber;
   }
+
+  /**
+   *
+   * @return
+   */
   public Date getProdDate(){
     return dateProduced;
   }

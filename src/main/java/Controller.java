@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javafx.beans.Observable;
@@ -15,8 +16,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import org.h2.security.auth.impl.StaticRolesMapper;
 
 
 public class Controller {
@@ -33,7 +37,6 @@ public class Controller {
 
   // JavaFX Alert variable
   Alert alert = new Alert(AlertType.NONE);
-
 
   @FXML
   private ChoiceBox<String> itemTypeCBox;
@@ -54,9 +57,27 @@ public class Controller {
   private TextArea productionLogTextArea;
 
   @FXML
-  private TableView<Product> productTV;
+  private TableView<Product> productLineTV;
 
+  @FXML
+  private TableColumn<Product, Integer> prodIDCol;
 
+  @FXML
+  private TableColumn<Product, String> prodNameCol;
+
+  @FXML
+  private TableColumn<Product, String> prodManCol;
+
+  @FXML
+  private TableColumn<Product, ItemType> prodTypeCol;
+
+  //Controller initialize method should do things that you want to happen
+  // once when the program starts:
+  //    define the ObservableList (it can be declared at class level)
+  //    call setupProductLineTable
+  //    associate the ObservableList with the Product Line ListView
+  //    call loadProductList
+  //    call loadProductionLog
   public void initialize() {
     for (int count = 1; count <= 10; count++) {
       cmbQuantity.getItems().add(String.valueOf(count));
@@ -68,8 +89,13 @@ public class Controller {
 
     cmbQuantity.getSelectionModel().selectFirst();
 
-    ObservableList<Product> productLine = setupProductLineTable();
-    productTV.setItems(productLine);
+    ObservableList<Product> data = setupProductLineTable();
+    prodIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+    prodNameCol.setCellValueFactory(new PropertyValueFactory<>("productName"));
+    prodManCol
+        .setCellValueFactory(new PropertyValueFactory<>("productManufacturer"));
+    prodTypeCol.setCellValueFactory(new PropertyValueFactory<>("itemType"));
+    productLineTV.setItems(data);
 
     // Display Production Log
     //productionRecordLog();
@@ -83,20 +109,60 @@ public class Controller {
     //Event handler for adding a product in Product Line tab
   void addProductBtn() {
 
-    String itemType = itemTypeCBox.getValue();
     String manufacturer = manufacturerTF.getText();
     String productName = productNameTF.getText();
+    String type = itemTypeCBox.getSelectionModel().getSelectedItem();
 
+    // initial check for invalid input into text fields
     if (productName.length() < 1 || manufacturer.length() < 1
-        || itemType.length() < 1) {
+        || type.length() < 1) {
       alert.setAlertType(AlertType.WARNING);
       alert.setTitle("Error");
       alert.setHeaderText("All fields are required.");
       alert.setContentText("INVALID INPUT!");
       alert.showAndWait();
     } else {
-      try {
-        connectToDatabase(1);
+      try {   // if input is valid, add to database
+        connectToDatabase();
+
+        final String SQL_AddProduct =
+            "INSERT INTO PRODUCT(NAME,TYPE,MANUFACTURER) VALUES(?, ?, ?)";
+
+        try {
+          PreparedStatement stmt = conn.prepareStatement(SQL_AddProduct);
+          stmt.setString(1, productNameTF.getText());
+          stmt.setString(2, itemTypeCBox.getSelectionModel().getSelectedItem());
+          stmt.setString(3, manufacturerTF.getText());
+          stmt.executeUpdate();
+
+          ItemType tempType;
+          switch (itemTypeCBox.getSelectionModel().getSelectedItem()) {
+            case "AUDIO":
+              tempType = ItemType.AUDIO;
+              break;
+            case "VISUAL":
+              tempType = ItemType.VISUAL;
+              break;
+            case "AUDIO_MOBILE":
+              tempType = ItemType.AUDIO_MOBILE;
+              break;
+            default:
+              tempType = ItemType.VISUAL_MOBILE;
+          }
+
+          Product newProduct = new Product(tempType, productName,
+              manufacturer);
+
+          ProductionRecord newProductionRecord = new ProductionRecord(
+              newProduct, 0);
+
+
+        } catch (SQLException e) {
+          System.out.println("SQLException: " + e.getMessage());
+          System.out.println("SQLState: " + e.getSQLState());
+          System.out.println("VendorError: " + e.getErrorCode());
+          e.printStackTrace();
+        }
         alert.setAlertType(AlertType.INFORMATION);
         alert.setHeaderText("Product was added!");
         alert.setContentText("");
@@ -106,16 +172,25 @@ public class Controller {
         throwables.printStackTrace();
       }
     }
+
   }
 
   @FXML
     // Event handler for recording a product in the Produce tab
   void recordProductdBtn() {
-    //PreparedStatement query = "INSERT INTO PRODUCTIONRECORD(NAME,"
-    //    + "SERIAL_NUM, DATE_PRODUCED)"
-    //    + "VALUES ('" + productName + "','" + itemType + "','"
-    //    + manufacturer + "');";
+    try {
+      connectToDatabase();
+      final String SQL_RecordProduct =
+          "INSERT INTO PRODUCTIONRECORD(PRODUCT_ID,SERIAL_NUM,DATE_PRODUCED)"
+              + "VALUES(?, ?, ?)";
 
+      closeDatabaseConnection();
+    } catch (SQLException e) {
+      System.out.println("SQLException: " + e.getMessage());
+      System.out.println("SQLState: " + e.getSQLState());
+      System.out.println("VendorError: " + e.getErrorCode());
+      e.printStackTrace();
+    }
   }
 
   public static void testMultimedia() {
@@ -149,7 +224,7 @@ public class Controller {
   }
 
 
-  public void issue5Prod2() {
+  /*public void issue5Prod2() {
 
     Product productProduced = new Product(ItemType.AUDIO, "Apple", "iPod");
 
@@ -165,12 +240,11 @@ public class Controller {
 
       //productionLog();
     }
-
-
   }
+   */
 
 
-  public void connectToDatabase(int DBquery) throws SQLException {
+  public void connectToDatabase() throws SQLException {
 
     try {
       // STEP 1: Register JDBC driver
@@ -179,32 +253,6 @@ public class Controller {
       //STEP 2: Open a connection
       conn = DriverManager.getConnection(DB_URL, USER, PASS);
       System.out.println("Connected to database.");
-
-      //STEP 3: Execute a query
-      final String SQL_AddProduct =
-          "INSERT INTO PRODUCT(NAME,TYPE,MANUFACTURER) VALUES(?, ?, ?)";
-
-      final String SQL_ProductLine =
-          "SELECT * FROM PRODUCT";
-
-      final String SQL_RecordProduct =
-          "INSERT INTO PRODUCTIONRECORD(PRODUCT_ID,SERIAL_NUM,DATE_PRODUCED)"
-              + "VALUES(?, ?, ?)";
-
-      switch (DBquery) {
-        case 1:
-          PreparedStatement stmt = conn.prepareStatement(SQL_AddProduct);
-          stmt.setString(1, productNameTF.getText());
-          stmt.setString(2, itemTypeCBox.getValue());
-          stmt.setString(3, manufacturerTF.getText());
-          stmt.executeUpdate();
-
-          break;
-        case 2:
-          PreparedStatement statement = conn.prepareStatement(SQL_ProductLine);
-          ResultSet rs = statement.executeQuery();
-          break;
-      }
 
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
@@ -216,6 +264,31 @@ public class Controller {
     }
   }
 
+  public void sqlQuery(int DBquery) {
+    //STEP 3: Execute a query
+
+    final String SQL_ProductLine =
+        "SELECT * FROM PRODUCT";
+
+    switch (DBquery) {
+      case 1:
+
+        break;
+      case 2:
+        try {
+          PreparedStatement prodLine = conn.prepareStatement(SQL_ProductLine);
+          ResultSet rs = prodLine.executeQuery();
+
+        } catch (SQLException e) {
+          System.out.println("SQLException: " + e.getMessage());
+          System.out.println("SQLState: " + e.getSQLState());
+          System.out.println("VendorError: " + e.getErrorCode());
+          e.printStackTrace();
+        }
+
+        break;
+    }
+  }
 
   public void closeDatabaseConnection() {
     //STEP 4: Close connection
@@ -229,8 +302,44 @@ public class Controller {
 
   public ObservableList<Product> setupProductLineTable() {
 
-    return productLine;
+    ObservableList<Product> data = FXCollections.observableArrayList();
 
+    try {
+      connectToDatabase();
+      String SQL = "SELECT * FROM PRODUCT";
+      Statement stmt = conn.createStatement();
+      ResultSet rs = stmt.executeQuery(SQL);
+
+      while (rs.next()) {
+
+        ItemType tempType;
+        switch (rs.getString(3)) {
+          case "AUDIO":
+            tempType = ItemType.AUDIO;
+            break;
+          case "VISUAL":
+            tempType = ItemType.VISUAL;
+            break;
+          case "AUDIO_MOBILE":
+            tempType = ItemType.AUDIO_MOBILE;
+            break;
+          default:
+            tempType = ItemType.VISUAL_MOBILE;
+        }
+
+        // product (type, name, manufacturer)
+        Product newProduct = new Product(tempType, rs.getString(2),
+            rs.getString(4));
+        data.add(newProduct);
+      }
+
+      closeDatabaseConnection();
+    } catch (SQLException e) {
+      System.out.println(e);
+    }
+
+    return data;
   }
 }
+
 

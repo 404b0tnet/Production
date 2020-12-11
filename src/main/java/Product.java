@@ -2,47 +2,80 @@ public class Product implements Item {
 
 
   private int id;
-  private ItemType type;
+  private ItemType itemType;
   private String productManufacturer;
   private String productName;
 
-
+  /**
+   *
+   * @param type
+   * @param productManufacturer
+   * @param productName
+   */
   public Product(ItemType type, String productManufacturer,
       String productName) {
-    this.type = type;
+
+    itemType = type;
     this.productManufacturer = productManufacturer;
     this.productName = productName;
   }
 
+  /**
+   *
+   * @return
+   */
   @Override
   public String toString() {
     return "Name: " + getProductName() +
         "\nManufacturer: " + getProductManufacturer() +
-        "\nType: " + type;
+        "\nType: " + itemType;
   }
 
-
+  /**
+   *
+   * @return
+   */
   public int getId() {
     return id;
   }
 
+  /**
+   *
+   * @return
+   */
   public String getProductManufacturer() {
     return productManufacturer;
   }
 
+  /**
+   *
+   * @return
+   */
   public String getProductName() {
     return productName;
   }
 
+  /**
+   *
+   * @return
+   */
   public String getItemType(){
-    return type.toString();
+    return itemType.toString();
   }
 
 
+  /**
+   *
+   * @param productManufacturer
+   */
   public void setProductManufacturer(String productManufacturer) {
     this.productManufacturer = productManufacturer;
   }
 
+  /**
+   *
+   * @param productName
+   */
   public void setProductName(String productName) {
     this.productName = productName;
   }
