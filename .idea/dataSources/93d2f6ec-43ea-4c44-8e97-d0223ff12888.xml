@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="Products">
-  <database-model serializer="dbm" dbms="H2" family-id="H2" format-version="4.19">
+  <database-model serializer="dbm" dbms="H2" family-id="H2" format-version="4.20">
     <root id="1">
       <ServerVersion>1.4.200</ServerVersion>
     </root>
@@ -175,13 +175,11 @@
     <sequence id="163" parent="4" name="SYSTEM_SEQUENCE_26DE84FC_F5C6_4EB8_A5A5_75A8ABB1A5F3">
       <ObjectId>9</ObjectId>
       <NameSurrogate>1</NameSurrogate>
-      <CacheSize>32</CacheSize>
       <AutoCreated>1</AutoCreated>
     </sequence>
     <sequence id="164" parent="4" name="SYSTEM_SEQUENCE_FB3093FD_DE73_406D_B549_2052A4F3A7F1">
       <ObjectId>4</ObjectId>
       <NameSurrogate>1</NameSurrogate>
-      <CacheSize>32</CacheSize>
       <AutoCreated>1</AutoCreated>
     </sequence>
     <table id="165" parent="4" name="PRODUCT">

@@ -34,8 +34,8 @@ public class Product implements Item {
     return productName;
   }
 
-  public String getItemTypeCode(){
-    return type.getCode();
+  public String getItemType(){
+    return type.toString();
   }
 
 

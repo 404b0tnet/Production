@@ -8,6 +8,8 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -46,7 +48,7 @@
                                     <Font name="Cambria Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="130.0" text="Item Type" GridPane.rowIndex="2">
+                              <Label alignment="CENTER_RIGHT" prefHeight="29.0" prefWidth="104.0" text="Item Type" GridPane.rowIndex="2">
                                  <font>
                                     <Font name="Cambria Bold" size="16.0" />
                                  </font>
@@ -62,6 +64,19 @@
                            </children>
                         </GridPane>
                         <TextArea fx:id="errorBox" layoutX="109.0" layoutY="103.0" opacity="0.0" prefHeight="30.0" prefWidth="365.0" />
+                        <TableView fx:id="productTV" layoutX="22.0" layoutY="141.0" prefHeight="200.0" prefWidth="556.0">
+                          <columns>
+                            <TableColumn prefWidth="87.0" text="Product ID" />
+                            <TableColumn prefWidth="197.0" text="Product Name" />
+                              <TableColumn prefWidth="136.0" text="Manufacturer" />
+                              <TableColumn prefWidth="121.0" text="Item Type" />
+                          </columns>
+                        </TableView>
+                        <Label alignment="CENTER_RIGHT" layoutX="27.0" layoutY="117.0" prefHeight="28.0" prefWidth="129.0" text="Existing Products">
+                           <font>
+                              <Font name="Cambria Bold" size="16.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
             </content>
@@ -70,7 +85,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView layoutX="22.0" layoutY="33.0" prefHeight="256.0" prefWidth="545.0" />
+                        <ListView fx:id="produceListView" layoutX="22.0" layoutY="33.0" prefHeight="256.0" prefWidth="545.0" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="7.0" prefHeight="28.0" prefWidth="132.0" text="Choose Product">
                            <font>
                               <Font name="Cambria Bold" size="16.0" />
@@ -81,8 +96,8 @@
                               <Font name="Cambria Bold" size="16.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="cmbQuantity" layoutX="154.0" layoutY="298.0" prefHeight="25.0" prefWidth="144.0" />
-                        <Button layoutX="399.0" layoutY="298.0" mnemonicParsing="false" onAction="#recordPrdBtn" prefHeight="25.0" prefWidth="168.0" text="Record Production" />
+                        <ComboBox fx:id="cmbQuantity" editable="true" layoutX="154.0" layoutY="298.0" prefHeight="25.0" prefWidth="144.0" />
+                        <Button layoutX="399.0" layoutY="298.0" mnemonicParsing="false" onAction="#recordProductdBtn" prefHeight="25.0" prefWidth="168.0" text="Record Production" />
                      </children>
                   </AnchorPane>
             </content>
@@ -91,7 +106,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextArea layoutX="23.0" layoutY="23.0" prefHeight="325.0" prefWidth="555.0" />
+                        <TextArea fx:id="productionLogTextArea" editable="false" layoutX="23.0" layoutY="23.0" prefHeight="325.0" prefWidth="555.0" />
                      </children></AnchorPane>
               </content>
             </Tab>

@@ -18,7 +18,8 @@ public class ProductionRecord{
 
   }
 
-  ProductionRecord(int productionNumber, int productID,
+
+  public ProductionRecord(int productionNumber, int productID,
       String serialNumber, Date dateProduced){
 
     this.productionNumber = productionNumber;
@@ -32,7 +33,7 @@ public class ProductionRecord{
     String counter = String.format("%05d",itemCounter);
 
     serialNumber = newProduct.getProductManufacturer().substring(0,3) +
-        newProduct.getItemTypeCode() + counter;
+        newProduct.getItemType() + counter;
 
     dateProduced = new Date();
 
@@ -41,11 +42,11 @@ public class ProductionRecord{
 
 
   public String toString(){
-    String formatDate = String.format("Date: %tc",dateProduced);
+    String formatDate = String.format("Date: %tc",getProdDate());
 
-    return "Prod. Num: " + productionNumber + " " +
-        "Product ID: " + productID + " " +
-        "Serial Num: " + serialNumber + " " +
+    return "Prod. Num: " + getProductionNum() + " " +
+        "Product ID: " + getProductID() + " " +
+        "Serial Num: " + getSerialNum() + " " +
         formatDate;
   }
 
