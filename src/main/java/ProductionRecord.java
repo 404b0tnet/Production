@@ -1,3 +1,6 @@
+/**
+ * @author Justin Smith
+ */
 import java.util.Date;
 
 public class ProductionRecord{

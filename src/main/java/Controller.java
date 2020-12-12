@@ -22,7 +22,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ListView;
 
-
+/**
+ * @author Justin Smith
+ */
 public class Controller {
 
   private ObservableList<Product> productLine;

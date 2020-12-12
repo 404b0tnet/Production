@@ -1,3 +1,6 @@
+/**
+ * @author Justin Smith
+ */
 public class Screen implements ScreenSpec {
 
   private String resolution = "";

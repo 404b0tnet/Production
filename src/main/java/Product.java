@@ -1,3 +1,6 @@
+/**
+ * @author Justin Smith
+ */
 public class Product implements Item {
 
 

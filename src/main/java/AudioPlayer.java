@@ -1,3 +1,6 @@
+/**
+ * @author Justin Smith
+ */
 class AudioPlayer extends Product implements MultimediaControl{
 
   private String supportedAudioFormats = "";
@@ -5,10 +8,10 @@ class AudioPlayer extends Product implements MultimediaControl{
 
   /**
    *
-   * @param name
-   * @param manufacturer
-   * @param supportedAudioFormats
-   * @param supportedPlaylistFormats
+   * @param name - Name of audio player
+   * @param manufacturer - name of audio manufacturer
+   * @param supportedAudioFormats - Type String of support audio formats
+   * @param supportedPlaylistFormats - Type String of supported playlist formats
    */
   public AudioPlayer(String name, String manufacturer,
       String supportedAudioFormats, String supportedPlaylistFormats){
@@ -22,7 +25,7 @@ class AudioPlayer extends Product implements MultimediaControl{
 
   /**
    *
-   * @return
+   * @return This returns the toString
    */
   @Override
   public String toString(){
