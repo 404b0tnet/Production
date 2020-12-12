@@ -6,8 +6,13 @@ public class Product implements Item {
   private String productManufacturer;
   private String productName;
 
+  public Product() {
+    productManufacturer = "";
+    productName = "";
+    id = 0;
+  }
+
   /**
-   *
    * @param type
    * @param productManufacturer
    * @param productName
@@ -21,7 +26,6 @@ public class Product implements Item {
   }
 
   /**
-   *
    * @return
    */
   @Override
@@ -32,7 +36,6 @@ public class Product implements Item {
   }
 
   /**
-   *
    * @return
    */
   public int getId() {
@@ -40,7 +43,6 @@ public class Product implements Item {
   }
 
   /**
-   *
    * @return
    */
   public String getProductManufacturer() {
@@ -48,7 +50,6 @@ public class Product implements Item {
   }
 
   /**
-   *
    * @return
    */
   public String getProductName() {
@@ -56,16 +57,28 @@ public class Product implements Item {
   }
 
   /**
-   *
    * @return
    */
-  public String getItemType(){
+  public String getItemType() {
     return itemType.toString();
   }
 
-
   /**
    *
+   * @param id
+   */
+  public void setID(int id) {
+    this.id = id;
+  }
+
+  /**
+   * @param itemType
+   */
+  public void setItemType(ItemType itemType) {
+    this.itemType = itemType;
+  }
+
+  /**
    * @param productManufacturer
    */
   public void setProductManufacturer(String productManufacturer) {
@@ -73,7 +86,6 @@ public class Product implements Item {
   }
 
   /**
-   *
    * @param productName
    */
   public void setProductName(String productName) {

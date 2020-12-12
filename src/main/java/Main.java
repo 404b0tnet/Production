@@ -12,22 +12,26 @@ public class Main extends Application {
 
   @Override
   public void start(Stage primaryStage) throws Exception {
-    Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+    try {
+      Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
-    Scene scene = new Scene(root, 600, 400);
+      Scene scene = new Scene(root, 600, 400);
 
-    primaryStage.setTitle("Production");
-    primaryStage.setScene(scene);
+      primaryStage.setTitle("Production");
+      primaryStage.setScene(scene);
 
-    // Application styling with CSS
-    scene.getStylesheets().add
-        (Main.class.getResource("Login.css").toExternalForm());
+      // Application styling with CSS
+      scene.getStylesheets().add
+          (Main.class.getResource("Login.css").toExternalForm());
 
-    // Display Application
-    primaryStage.show();
+      // Display Application
+      primaryStage.show();
 
-
-    // test
+      // test
+    } catch (Exception e){
+      System.out.println(e.getMessage());
+      System.out.println(e.getCause());
+    }
 
   }
 }
