@@ -1,17 +1,9 @@
 # Production
 One paragraph of project description goes here.
-Briefly address the 5 W's.
-What is the project?
-Who made it? Did you make it independently or with a team?
-When did you make it? At what level of experience and proficiency were / are you?
-Why did you make it? For fun? For an assignment? How does it relect you as a person?
-Where did you make it? What school / class?
-Note for school project: this may be the only thing someone visiting your page reads. Try to make a great impression. Make someone want to hire you. This section will also be useful to you in the future to remind you about the project.
-Demonstration
-
-Add an animated gif of your program running. You can use ShareX, GIPHY Capture or another tool. https://blog.github.com/2018-06-29-GIF-that-keeps-on-GIFing/ Note for school project: This is a great way for friends and family to easily see your project in action. The markdown is ![Alt text](relative/path/to/img.png)
-Sample GIF
-Documentation
+This was a semester long project in Programming II at Florida Gulf Coast University (FGCU). I made it independently, and I haven't finished it yet.
+This was completed during the 2020 Fall semester. This was a diffuclt program. It was fun learning everything involved,
+but it was definitely time consuming. Going into this as a beginner, my skills have improved and I would say I am closer to
+an intermediate level.
 
 Create a docs folder in your project. If using Java, generate JavaDoc in your IDE. If using C++, use Doxygen. Change repository settings (using Settings at top of page) to use GitHub Pages with your docs folder. Add a link to the javadoc/doxygen index.html file with this markdown: [Text to appear](URL)
 The URL will be YourGitHubUserName.github.io/YourRepositoryName/foldername/filename
