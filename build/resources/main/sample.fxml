@@ -64,12 +64,12 @@
                            </children>
                         </GridPane>
                         <TextArea fx:id="errorBox" layoutX="109.0" layoutY="103.0" opacity="0.0" prefHeight="30.0" prefWidth="365.0" />
-                        <TableView fx:id="productTV" layoutX="22.0" layoutY="141.0" prefHeight="200.0" prefWidth="556.0">
+                        <TableView fx:id="productLineTV" layoutX="25.0" layoutY="142.0" prefHeight="142.0" prefWidth="552.0">
                           <columns>
-                            <TableColumn prefWidth="87.0" text="Product ID" />
-                            <TableColumn prefWidth="197.0" text="Product Name" />
-                              <TableColumn prefWidth="136.0" text="Manufacturer" />
-                              <TableColumn prefWidth="121.0" text="Item Type" />
+                            <TableColumn fx:id="prodIDCol" editable="false" prefWidth="87.0" text="Product ID" />
+                            <TableColumn fx:id="prodNameCol" editable="false" prefWidth="197.0" text="Product Name" />
+                              <TableColumn fx:id="prodManCol" editable="false" prefWidth="136.0" text="Manufacturer" />
+                              <TableColumn fx:id="prodTypeCol" editable="false" prefWidth="131.0" text="Item Type" />
                           </columns>
                         </TableView>
                         <Label alignment="CENTER_RIGHT" layoutX="27.0" layoutY="117.0" prefHeight="28.0" prefWidth="129.0" text="Existing Products">
