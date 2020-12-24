@@ -1,0 +1,55 @@
+/*
+Adds background image
+ */
+.root {
+    -fx-background-image: url("background.jpg");
+}
+
+
+/*
+Adds effects to the labels
+
+.label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
+ */
+
+
+/*
+Calling the actiontarget ID from Main.java
+This allows me to customize the action event
+without having to add code to Main.java
+
+#actiontarget {
+    -fx-fill: FIREBRICK;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
+
+ */
+
+
+/*
+Adds shadow to the button
+ */
+
+.button {
+    -fx-text-fill: Black;
+    -fx-font-family: "Century";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#ff3b1f, #ffffff);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+
+
+
+/*
+Adds a hover effect to the button
+ */
+.button:hover {
+    -fx-background-color: linear-gradient(#ffffff,#ff3b1f);
+}
