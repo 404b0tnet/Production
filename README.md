@@ -8,7 +8,7 @@ an intermediate level.
 Create a docs folder in your project. If using Java, generate JavaDoc in your IDE. If using C++, use Doxygen. Change repository settings (using Settings at top of page) to use GitHub Pages with your docs folder. Add a link to the javadoc/doxygen index.html file with this markdown: [Text to appear](URL)
 The URL will be YourGitHubUserName.github.io/YourRepositoryName/foldername/filename
 Do not include the docs folder name in your URL.
-Sample: [JavaDoc](https://pv-cop.github.io/PV-README-TEMPLATE/javadoc/index.html)
+Sample: [JavaDoc](https://github.com/404b0tnet/Production/tree/master/resources/Java%20Doc%20Files)
 
 JavaDoc
 Diagrams
