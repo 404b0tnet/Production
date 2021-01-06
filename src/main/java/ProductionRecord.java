@@ -1,7 +1,13 @@
 /**
  * @author Justin Smith
  */
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 public class ProductionRecord{
 
@@ -9,7 +15,8 @@ public class ProductionRecord{
   private int productionNumber;
   private int productID;
   private String serialNumber;
-  private Date dateProduced;
+  private ZonedDateTime dateProduced;
+  private ZoneId timeZone;
 
   /**
    *
@@ -20,9 +27,7 @@ public class ProductionRecord{
     this.productID = productID;
     productionNumber = 0;
     serialNumber = "0";
-    dateProduced = new Date();
-
-
+    dateProduced = ZonedDateTime.now();
   }
 
   /**
@@ -33,7 +38,7 @@ public class ProductionRecord{
    * @param dateProduced
    */
   public ProductionRecord(int productionNumber, int productID,
-      String serialNumber, Date dateProduced){
+      String serialNumber, ZonedDateTime dateProduced){
 
     this.productionNumber = productionNumber;
     this.productID = productID;
@@ -53,7 +58,8 @@ public class ProductionRecord{
     serialNumber = newProduct.getProductManufacturer().substring(0,3) +
         newProduct.getItemType() + counter;
 
-    dateProduced = new Date();
+
+    dateProduced = ZonedDateTime.now();
 
   }
 
@@ -63,12 +69,17 @@ public class ProductionRecord{
    * @return
    */
   public String toString(){
-    String formatDate = String.format("Date: %tc",getProdDate());
+    // Example Date Format
+    // Date: Mon Oct 14 10:29:48 UTC 2019"
+    DateTimeFormatter formatPattern = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy");
+    String formattedDate = getProdDate().format(formatPattern);
+
+
 
     return "Prod. Num: " + getProductionNum() + " " +
         "Product ID: " + getProductID() + " " +
         "Serial Num: " + getSerialNum() + " " +
-        formatDate;
+        "Date: " + formattedDate;
   }
 
 
@@ -103,7 +114,7 @@ public class ProductionRecord{
    *
    * @param date
    */
-  public void setProdDate(Date date){
+  public void setProdDate(ZonedDateTime date){
     dateProduced = date;
   }
 
@@ -137,7 +148,7 @@ public class ProductionRecord{
    *
    * @return
    */
-  public Date getProdDate(){
+  public ZonedDateTime getProdDate(){
     return dateProduced;
   }
 

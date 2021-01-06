@@ -6,7 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLOutput;
 import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -82,6 +86,7 @@ public class Controller {
   //    associate the ObservableList with the Product Line ListView
   //    call loadProductionLog
   public void initialize() {
+
     for (int count = 1; count <= 10; count++) {
       cmbQuantity.getItems().add(String.valueOf(count));
     }
@@ -99,7 +104,7 @@ public class Controller {
     loadProductList(productLine);
 
     // Display Production Log
-    // loadProductionLog();
+    //loadProductionLog();
 
     //issue5Prod2();
     //testMultimedia();
@@ -112,11 +117,16 @@ public class Controller {
 
     String manufacturer = manufacturerTF.getText();
     String productName = productNameTF.getText();
-    String type = itemTypeCBox.getSelectionModel().getSelectedItem();
+    String typeString = itemTypeCBox.getSelectionModel().getSelectedItem();
+
+    ItemType type = itemTypeFromString(typeString);
+
+    Product p = new Product(type, manufacturer, productName);
 
     // initial check for invalid input into text fields
-    if (productName.length() < 1 || manufacturer.length() < 1
-        || type.length() < 1) {
+    if (p.getProductName().length() < 1
+        || p.getProductManufacturer().length() < 1
+        || p.getItemType().length() < 1) {
       alert.setAlertType(AlertType.WARNING);
       alert.setTitle("Error");
       alert.setHeaderText("All fields are required.");
@@ -133,11 +143,11 @@ public class Controller {
 
         try {
           add_prod.setString(1, productName);
-          add_prod.setString(2, type);
+          add_prod.setString(2, typeString);
           add_prod.setString(3, manufacturer);
           add_prod.executeUpdate();
 
-          updateExistingProducts(type);
+          updateExistingProducts();
 
         } catch (SQLException e) {
           System.out.println("SQLException: " + e.getMessage());
@@ -154,8 +164,9 @@ public class Controller {
         productNameTF.clear();
         manufacturerTF.clear();
 
-        stmt.close();
+        add_prod.close();
         conn.close();
+        System.out.println("Database was closed.");
 
       } catch (SQLException throwables) {
         throwables.printStackTrace();
@@ -168,28 +179,22 @@ public class Controller {
     // Event handler for recording a product in the Produce tab
   void recordProductdBtn() {
 
+    loadProductionLog();
+
+    try {
+      //loadProductionLog();
+    } catch (Exception e){
+      System.out.println(e.getMessage());
+      System.out.println(e.getCause());
+      System.out.println(e.getLocalizedMessage());
+      System.out.println(e.toString());
+    }
+
     alert.setAlertType(AlertType.INFORMATION);
     alert.setHeaderText("Product was recorded!");
     alert.setContentText("");
     alert.showAndWait();
 
-
-    /*
-    try {
-      connectToDatabase();
-      final String SQL_RecordProduct =
-          "INSERT INTO PRODUCTIONRECORD(PRODUCT_ID,SERIAL_NUM,DATE_PRODUCED)"
-              + "VALUES(?, ?, ?)";
-
-      stmt.close();
-      conn.close();
-    } catch (SQLException e) {
-      System.out.println("SQLException: " + e.getMessage());
-      System.out.println("SQLState: " + e.getSQLState());
-      System.out.println("VendorError: " + e.getErrorCode());
-      e.printStackTrace();
-    }
-    */
   }
 
   /*
@@ -253,7 +258,6 @@ public void issue5Prod2() {
       //STEP 2: Open a connection
       conn = DriverManager.getConnection(DB_URL, USER, PASS);
       System.out.println("Connected to database.");
-
     } catch (Exception e) {
       System.out.println(e.getMessage());
       System.out.println(e.getCause());
@@ -269,30 +273,12 @@ public void issue5Prod2() {
     }
   }
 
-  public void updateExistingProducts(String s) {
-    try {
-      connectToDatabase();
-      String SQL = "SELECT ID FROM PRODUCT";
-      Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(SQL);
+  public void updateExistingProducts() {
+    ObservableList<Product> productLine = setupProductLineTable();
+    productLineTV.setItems(productLine);
 
-      Product newProduct = new Product();
-      newProduct.setID(rs.getInt("ID"));
-      newProduct.setItemType(itemTypeFromString(s));
-      newProduct.setProductName(productNameTF.getText());
-      newProduct.setProductManufacturer(manufacturerTF.getText());
+    loadProductList(productLine);
 
-      productLineTV.getItems().add(newProduct);
-
-      stmt.close();
-      conn.close();
-
-    } catch (SQLException e) {
-      System.out.println("SQLException: " + e.getMessage());
-      System.out.println("SQLState: " + e.getSQLState());
-      System.out.println("VendorError: " + e.getErrorCode());
-      e.printStackTrace();
-    }
   }
 
   public void loadProductList(ObservableList<Product> list) {
@@ -301,7 +287,63 @@ public void issue5Prod2() {
     for (Product pr : data) {
       produceListView.getItems().add(pr);
     }
+
+
   }
+
+  public void loadProductionLog() {
+
+    // gets selection from produce tab
+    Product productObject = produceListView.getSelectionModel()
+        .getSelectedItem();
+    int counter = Integer.parseInt(cmbQuantity.getValue());
+
+    // create production record objects and send to array list
+    ArrayList<ProductionRecord> productionRun = new ArrayList<>();
+
+    for (int i = 0; i <= counter; i++) {
+      productionRun.add(new ProductionRecord(productObject, i));
+    }
+
+    addToProductionRecordDB(productionRun);
+
+  }
+
+  public void addToProductionRecordDB(ArrayList<ProductionRecord> array_pr) {
+
+    try {
+      connectToDatabase();
+
+      final String SQL_RecordProduct =
+          "INSERT INTO PRODUCTIONRECORD(PRODUCT_ID,SERIAL_NUM,DATE_PRODUCED)"
+              + "VALUES(?, ?, ?)";
+
+      PreparedStatement add_recordProduct = conn
+          .prepareStatement(SQL_RecordProduct);
+
+      try {
+        for (ProductionRecord prObj : array_pr) {
+          Timestamp timestamp = new
+              Timestamp(prObj.getProdDate().toInstant().getEpochSecond());
+
+          add_recordProduct.setInt(1, prObj.getProductID());
+          add_recordProduct.setString(2, prObj.getSerialNum());
+          add_recordProduct.setTimestamp(3, timestamp);
+          System.out.println(prObj.toString());
+        }     // end for loop
+      } catch (SQLException e) {
+        System.out.println("SQLException: " + e.getMessage());
+        System.out.println("SQLState: " + e.getSQLState());
+        System.out.println("VendorError: " + e.getErrorCode());
+        e.printStackTrace();
+      }
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+
+
+  }
+
 
   public ObservableList<Product> setupProductLineTable() {
 
@@ -359,11 +401,8 @@ public void issue5Prod2() {
     return data;
   }
 
-  public void loadProductionLog() {
-    //productionLogTextArea.appendText(productionRecord.toString());
-  }
 
-  public ItemType itemTypeFromString(String typeInput) {
+  private ItemType itemTypeFromString(String typeInput) {
     ItemType type;
 
     switch (typeInput) {
