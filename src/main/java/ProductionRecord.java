@@ -53,6 +53,9 @@ public class ProductionRecord{
    * @param itemCounter
    */
   public ProductionRecord(Product newProduct, int itemCounter){
+
+    productID = newProduct.getId();
+
     String counter = String.format("%05d",itemCounter);
 
     serialNumber = newProduct.getProductManufacturer().substring(0,3) +

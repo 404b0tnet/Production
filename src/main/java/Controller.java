@@ -1,3 +1,4 @@
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -32,6 +33,7 @@ import javafx.scene.control.ListView;
 public class Controller {
 
   private ObservableList<Product> productLine;
+  ArrayList<ProductionRecord> productionRun = new ArrayList<>();
 
   // Database variables
   final String JDBC_DRIVER = "org.h2.Driver";
@@ -42,6 +44,7 @@ public class Controller {
   final String PASS = "";
   Connection conn = null;
   Statement stmt = null;
+  ResultSet rs = null;
 
   // JavaFX Alert variable
   Alert alert = new Alert(AlertType.NONE);
@@ -87,6 +90,16 @@ public class Controller {
   //    call loadProductionLog
   public void initialize() {
 
+/*    try {
+      connectToDatabase();
+    } catch (Exception e){
+      System.out.println(e.getMessage());
+      System.out.println(e.getCause());
+      System.out.println(e.getLocalizedMessage());
+      System.out.println(e.toString());
+    }
+ */
+
     for (int count = 1; count <= 10; count++) {
       cmbQuantity.getItems().add(String.valueOf(count));
     }
@@ -105,9 +118,6 @@ public class Controller {
 
     // Display Production Log
     //loadProductionLog();
-
-    //issue5Prod2();
-    //testMultimedia();
   }
 
 
@@ -135,7 +145,6 @@ public class Controller {
     } else {
       try {   // if input is valid, add to database
         connectToDatabase();
-
         final String SQL_AddProduct =
             "INSERT INTO PRODUCT(NAME,TYPE,MANUFACTURER) VALUES(?, ?, ?)";
 
@@ -164,13 +173,13 @@ public class Controller {
         productNameTF.clear();
         manufacturerTF.clear();
 
-        add_prod.close();
-        conn.close();
-        System.out.println("Database was closed.");
-
       } catch (SQLException throwables) {
         throwables.printStackTrace();
+      }finally {
+        try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+        try { if (conn != null) conn.close(); } catch (Exception e) {};
       }
+
     }
 
   }
@@ -178,23 +187,18 @@ public class Controller {
   @FXML
     // Event handler for recording a product in the Produce tab
   void recordProductdBtn() {
+    // create production record objects and send to array list
 
     loadProductionLog();
 
-    try {
-      //loadProductionLog();
-    } catch (Exception e){
-      System.out.println(e.getMessage());
-      System.out.println(e.getCause());
-      System.out.println(e.getLocalizedMessage());
-      System.out.println(e.toString());
-    }
+    addToProductionRecordDB(productionRun);
 
     alert.setAlertType(AlertType.INFORMATION);
     alert.setHeaderText("Product was recorded!");
     alert.setContentText("");
     alert.showAndWait();
 
+    showProduction();
   }
 
   /*
@@ -264,15 +268,6 @@ public void issue5Prod2() {
     }
   }
 
-  public void closeDatabaseConnection() throws SQLException {
-    //STEP 4: Close connection
-    if (conn != null && stmt != null) {
-      stmt.close();
-      conn.close();
-      System.out.println("Disconnected from databse.");
-    }
-  }
-
   public void updateExistingProducts() {
     ObservableList<Product> productLine = setupProductLineTable();
     productLineTV.setItems(productLine);
@@ -298,14 +293,31 @@ public void issue5Prod2() {
         .getSelectedItem();
     int counter = Integer.parseInt(cmbQuantity.getValue());
 
-    // create production record objects and send to array list
-    ArrayList<ProductionRecord> productionRun = new ArrayList<>();
+    try {
+      connectToDatabase();
+      stmt = conn.createStatement();
+      String sql = "SELECT * FROM PRODUCT ORDER BY ID DESC FETCH FIRST 1 ROW ONLY";
+      // pull from database
+      rs = stmt.executeQuery(sql);
 
+      productObject.setID(rs.getInt("ID"));
+    } catch (SQLException e){
+      System.out.println(e.getMessage());
+      System.out.println(e.getErrorCode());
+      System.out.println(e.getSQLState());
+    }finally {
+      try { if (rs != null) rs.close(); } catch (Exception e) {};
+      try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+      try { if (conn != null) conn.close(); } catch (Exception e) {};
+    }
+
+    // populate arraylist
     for (int i = 0; i <= counter; i++) {
       productionRun.add(new ProductionRecord(productObject, i));
     }
 
-    addToProductionRecordDB(productionRun);
+    // populate textArea in product tab
+    // showProduction();
 
   }
 
@@ -313,7 +325,6 @@ public void issue5Prod2() {
 
     try {
       connectToDatabase();
-
       final String SQL_RecordProduct =
           "INSERT INTO PRODUCTIONRECORD(PRODUCT_ID,SERIAL_NUM,DATE_PRODUCED)"
               + "VALUES(?, ?, ?)";
@@ -323,12 +334,13 @@ public void issue5Prod2() {
 
       try {
         for (ProductionRecord prObj : array_pr) {
-          Timestamp timestamp = new
-              Timestamp(prObj.getProdDate().toInstant().getEpochSecond());
+          Timestamp timestamp = Timestamp.valueOf(prObj.getProdDate().toLocalDateTime());
 
           add_recordProduct.setInt(1, prObj.getProductID());
           add_recordProduct.setString(2, prObj.getSerialNum());
           add_recordProduct.setTimestamp(3, timestamp);
+          // add to database
+          add_recordProduct.executeUpdate();
           System.out.println(prObj.toString());
         }     // end for loop
       } catch (SQLException e) {
@@ -339,11 +351,13 @@ public void issue5Prod2() {
       }
     } catch (SQLException throwables) {
       throwables.printStackTrace();
+    } finally {
+      try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+      try { if (conn != null) conn.close(); } catch (Exception e) {};
     }
 
 
   }
-
 
   public ObservableList<Product> setupProductLineTable() {
 
@@ -359,11 +373,13 @@ public void issue5Prod2() {
     productLineTV.getColumns()
         .setAll(prodIDCol, prodNameCol, prodTypeCol, prodManCol);
 
+
     try {
       connectToDatabase();
+
       String SQL = "SELECT * FROM PRODUCT";
       Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery(SQL);
+      rs = stmt.executeQuery(SQL);
 
       while (rs.next()) {
 
@@ -393,14 +409,16 @@ public void issue5Prod2() {
 
       }
 
-      closeDatabaseConnection();
     } catch (SQLException e) {
       System.out.println(e);
+    } finally {
+      try { if (rs != null) rs.close(); } catch (Exception e) {};
+      try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+      try { if (conn != null) conn.close(); } catch (Exception e) {};
     }
 
     return data;
   }
-
 
   private ItemType itemTypeFromString(String typeInput) {
     ItemType type;
@@ -420,6 +438,47 @@ public void issue5Prod2() {
     }
 
     return type;
+  }
+
+  private void showProduction(){
+
+    // for every production record in the productRun
+    // arraylist, print out the toString()
+    for (ProductionRecord pr : productionRun){
+      productionLogTextArea.appendText(pr.toString());
+      productionLogTextArea.appendText("\n");
+    }
+
+  }
+
+  private boolean SQLproductIDCompare(Product product){
+    boolean doesProductIDExists = false;
+
+    try {
+      connectToDatabase();
+
+      final String SQL_compareIDSelection =
+          "SELECT PRODUCT_ID FROM PRODUCTIONRECORD";
+
+      rs = stmt.executeQuery(SQL_compareIDSelection);
+
+      while (rs.next()){
+        if (rs.getInt(0) == product.getId()){
+          doesProductIDExists = true;
+          break;
+        }
+      }
+    } catch (SQLException e){
+      System.out.println(e.getMessage());
+      System.out.println(e.getSQLState());
+      System.out.println(e.getErrorCode());
+    } finally {
+      try { if (rs != null) rs.close(); } catch (Exception e) {};
+      try { if (stmt != null) stmt.close(); } catch (Exception e) {};
+      try { if (conn != null) conn.close(); } catch (Exception e) {};
+    }
+
+    return doesProductIDExists;
   }
 
 }
